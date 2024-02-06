@@ -1,0 +1,43 @@
+{%extends 'base.html'%}
+
+{%block title%}
+ Ergast
+{%endblock%}
+
+{%block content%}
+<form method="POST">
+    <div class="mb-3">
+      <label for="year" class="form-label">Year</label>
+      <input type="text" class="form-control" id="year" name="year">
+    </div>
+    <div class="mb-3">
+      <label for="round" class="form-label">Round</label>
+      <input type="text" class="form-control" id="round" name="round">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  {% if drivers %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Position</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Team</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%for driver in drivers%}
+        <tr>
+            <th scope="row">{{driver['position']}}</th>
+            <td>{{driver.first_name}}</td>
+            <td>{{driver.last_name}}</td>
+            <td>{{driver.team}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
+  {%endif%}
+
+{%endblock%}
