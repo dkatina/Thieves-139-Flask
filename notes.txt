@@ -1,0 +1,23 @@
+# Requirements:
+create a form that will take in a username, password, and email from my user.
+This form should also be CSRF protected
+and use the same url endpoint for both Get and Post requests
+
+Need a new page for the sign up form
+-creat signup.html template
+-add navbar to this template
+-update navbar to route to this template
+
+TRASH
+
+need a signup route
+- Get and Post
+- import SignUpForm
+- On Get request render_template('signup.html', form=form)
+- On Post extract form data and return that data
+
+need a new FlaskForm
+- username StringField
+- email EmailField
+- password PasswordField
+- submit button SubmitField

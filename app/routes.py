@@ -1,7 +1,7 @@
 from flask import request, render_template
 import requests
 from app import app
-from .forms import LoginForm
+from .forms import LoginForm, SignUpForm
 
 
 # / route is your home route
@@ -25,6 +25,17 @@ def login():
         return f'{email} {password}'
     else:
         return render_template('login.html', form=form)
+    
+@app.route('/signup', methods=['GET','POST'])
+def signup():
+    form = SignUpForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+        return f'{username} {email} {password}'
+    else:
+        return render_template('signup.html', form=form)
     
 
 #useing my API helper functions
