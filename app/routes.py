@@ -1,12 +1,15 @@
-from flask import request, render_template
+from flask import request, render_template, redirect, url_for, flash
 import requests
 from app import app
 from .forms import LoginForm, SignUpForm
+from app.models import User
+from werkzeug.security import check_password_hash
+from flask_login import login_user, logout_user
 
 
 # / route is your home route
 @app.route('/')
-def hello_world():
+def home():
     return render_template('home.html')
 
 #routes taking in URL parameter "name"
@@ -22,7 +25,15 @@ def login():
     if request.method == 'POST' and form.validate_on_submit():
         email = form.email.data
         password = form.password.data
-        return f'{email} {password}'
+
+        queried_user = User.query.filter(User.email == email).first()
+        if queried_user and check_password_hash(queried_user.password, password):
+            flash(f'Welcome {queried_user.username}!', 'info')
+            login_user(queried_user)
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid username email or password...figure it out', 'warning')
+            return render_template('login.html', form=form)
     else:
         return render_template('login.html', form=form)
     
@@ -33,9 +44,17 @@ def signup():
         username = form.username.data
         email = form.email.data
         password = form.password.data
-        return f'{username} {email} {password}'
+        new_user = User(username, email, password)
+        new_user.save()
+        flash('Success! Thank you for Signing Up', 'success')
+        return redirect(url_for('login'))
     else:
         return render_template('signup.html', form=form)
+    
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
     
 
 #useing my API helper functions
