@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -18,3 +19,26 @@ class User(db.Model, UserMixin):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    img_url = db.Column(db.String, nullable=False)
+    caption = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __init__(self, img_url, caption, user_id, location=''):
+        self.img_url = img_url
+        self.caption = caption
+        self.user_id = user_id
+        self.location = location
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+
+

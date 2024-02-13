@@ -21,3 +21,20 @@ need a new FlaskForm
 - email EmailField
 - password PasswordField
 - submit button SubmitField
+
+
+
+
+# Week 6 Day 1 adding Posts to our app
+
+#post blueprint
+
+#post route
+
+#post form
+
+#post model ---DONE
+
+#create_post template
+
+#feed to view post outside of my database
