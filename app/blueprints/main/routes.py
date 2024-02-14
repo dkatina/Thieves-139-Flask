@@ -1,7 +1,8 @@
 from . import main
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 import requests
-
+from app.models import User, db
+from flask_login import current_user, login_required
 
 # / route is your home route
 @main.route('/')
@@ -46,3 +47,28 @@ def ergast():
         return render_template('ergast.html', drivers=drivers)
     else:
         return render_template('ergast.html')
+    
+@main.route('/connect')
+@login_required
+def connect():
+    users = User.query.filter(User.id != current_user.id)
+    return render_template('connect.html', users=users)
+
+
+@main.route('/follow/<user_id>')
+@login_required
+def follow(user_id):
+    user =  User.query.get(user_id)
+    current_user.following.append(user)
+    db.session.commit()
+    flash(f'Successfully followed {user.username}', 'info')
+    return redirect(url_for('main.connect'))
+
+@main.route('/unfollow/<user_id>')
+@login_required
+def unfollow(user_id):
+    user =  User.query.get(user_id)
+    current_user.following.remove(user)
+    db.session.commit()
+    flash(f'Successfully unfollowed {user.username}', 'warning')
+    return redirect(url_for('main.connect'))

@@ -14,11 +14,11 @@
     <div class="mx-auto card" style="width: 18rem;">
         <img src="{{post.img_url}}" class="card-img-top" alt="{{post.caption}}">
         <div class="card-body">
-          <h6 class="card-title">Author</h6>
-          <p class="card-text">{{post.caption}}</p>
+          <h6 class="card-title">{{post.caption}}</h6>
+          <p class="card-text">{{post.author.username}} -  {{ moment(post.date).fromNow() }}</p>
           {%if current_user.id == post.user_id %}
-          <a href="#" class="btn btn-info">Edit</a>
-          <a href="#" class="btn btn-danger">Delete</a>
+          <a href="{{url_for('post.edit_post', post_id=post.id)}}" class="btn btn-info">Edit</a>
+          <a href="{{url_for('post.delete_post', post_id=post.id)}}" class="btn btn-danger">Delete</a>
           {%endif%}
         </div>
     </div>
