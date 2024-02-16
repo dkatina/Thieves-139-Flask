@@ -21,15 +21,18 @@ login_manager.login_message = 'You must be logged in to access this page!'
 login_manager.login_message_category = 'danger'
 
 
+
 #import my blueporint onto app
 from app.blueprints.auth import auth
 from app.blueprints.main import main
 from app.blueprints.post import post
+from app.blueprints.api import api
 
 #register blueprint onto the app
 app.register_blueprint(auth)
 app.register_blueprint(main)
 app.register_blueprint(post)
+app.register_blueprint(api)
 
 @login_manager.user_loader
 def load_user(user_id):
